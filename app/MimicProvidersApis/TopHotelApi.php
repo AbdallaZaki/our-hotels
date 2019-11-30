@@ -4,7 +4,9 @@ namespace App\MimicProvidersApis;
 
 use Illuminate\Support\Carbon;
 
-class TopHotelApi {
+use App\MimicProvidersApis\Abstracts\TopHotelApiInterface;
+
+class TopHotelApi implements TopHotelApiInterface {
     
     // exposed best Hotels api
     public function topHotelApi(string $from,string $to, string $city ,int $adultsCount):array
@@ -17,7 +19,14 @@ class TopHotelApi {
         foreach ($hotelsData as $hotel) {
 
             if($this->dateFilter($hotel,$from,$to)&&$this->cityFilter($hotel,$city)&&
-            $this->adultsCountFilter($hotel,$adultsCount)) $filteredHotels[] = $hotel;
+            $this->adultsCountFilter($hotel,$adultsCount)) {
+
+                unset($hotel['from']);
+
+                unset($hotel['to']);
+
+                $filteredHotels[] = $hotel;
+            }
 
         }
 
