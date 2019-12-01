@@ -127,11 +127,11 @@ class TopHotelApi implements TopHotelApiInterface {
                 "hotelName" => "happy hotel 2",
                 "rate" => '***',
                 "price" => 180,
-                "discount" => 0,
+                "discount" => 5,
                 "city" => "NYC",
                 "from" => '2019-10-01T10:15:30Z',
-                "to" => '2019-12-20T10:15:30Z',
- 	            "adultsCount" => 1,
+                "to" => '2019-12-25T10:15:30Z',
+ 	            "adultsCount" => 3,
                 "amenities" => ["Television","Computer and Internet access","Personal items","Hair dryer","Towels"]
             ],
             [

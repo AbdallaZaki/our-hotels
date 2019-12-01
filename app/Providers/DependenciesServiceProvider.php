@@ -19,7 +19,9 @@ class DependenciesServiceProvider extends ServiceProvider
 
         $this->app->bind('App\MimicProvidersApis\Abstracts\TopHotelApiInterface',
         'App\MimicProvidersApis\TopHotelApi');
-
+        
+        $this->app->bind('App\Services\Abstracts\HotelSearchServiceInterface',
+        'App\Services\HotelSearchService');
     }
 
     /**

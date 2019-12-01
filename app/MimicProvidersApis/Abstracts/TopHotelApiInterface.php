@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 namespace App\MimicProvidersApis\Abstracts;
 
+interface TopHotelApiInterface
+{
 
-interface TopHotelApiInterface {
+    public function topHotelApi(string $from, string $to, string $city, int $adultsCount): array;
 
-    public function topHotelApi(string $from,string $to, string $city ,int $adultsCount):array;
-    
 }
