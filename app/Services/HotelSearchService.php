@@ -6,14 +6,27 @@ use App\Services\Abstracts\HotelSearchServiceInterface;
 
 class HotelSearchService implements HotelSearchServiceInterface
 {
-
+    /**
+     * private field to hold hotels providers
+     */
     private $hotelsProviders = [];
 
+    /**
+     * hotel service constructor used for calling load providers function
+     */
     public function __construct()
     {
         $this->loadProviders();
     }
 
+    /**
+     * public function search exposed to be used for serach in hotels providers data
+     * @param string $from_date
+     * @param string $to_date
+     * @param string $city
+     * @param int $adults_number
+     * @return array $hotels
+     */
     public function search(string $from_date, string $to_date, string $city, int $adults_number): array
     {
         $hotelsProvidersResponses = [];
@@ -32,6 +45,11 @@ class HotelSearchService implements HotelSearchServiceInterface
 
     }
 
+    /**
+     * private function to remove rate from hotel array
+     * @param array $hotels
+     * @return array $hotels
+     */
     private function removeRate(array $hotels): array
     {
         $filteredHotels = [];
@@ -46,6 +64,11 @@ class HotelSearchService implements HotelSearchServiceInterface
         return $filteredHotels;
     }
 
+    /**
+     * private function to sort hotels by rate
+     * @param string $hotels
+     * @return array of $hotels
+     */
     private function sortByRate(array $hotels): array
     {
         uasort($hotels, function ($hotelA, $hotelB) {
@@ -59,6 +82,11 @@ class HotelSearchService implements HotelSearchServiceInterface
         return $hotels;
     }
 
+    /**
+     * private function to marge hotels from multi providers
+     * @param array $$responses
+     * @return array $hotels
+     */
     private function unifiyProvidersResponses(array $responses): array
     {
         $responsesCount = count($responses);
@@ -74,6 +102,10 @@ class HotelSearchService implements HotelSearchServiceInterface
         return array_merge(...$responses);
     }
 
+    /**
+     * private function to load multi providers
+     * @void
+     */
     private function loadProviders()
     {
 

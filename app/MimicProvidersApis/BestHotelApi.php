@@ -8,7 +8,14 @@ use Illuminate\Support\Carbon;
 class BestHotelApi implements BestHotelApiInterface
 {
 
-    // exposed best Hotels api
+    /**
+     * public function search exposed to search best hotels api
+     * @param string $$fromDate
+     * @param string $toDate
+     * @param string $city
+     * @param int $numberOfAdults
+     * @return array $hotels
+     */
     public function bestHotelApi(string $fromDate, string $toDate, string $city, int $numberOfAdults): array
     {
 
@@ -40,7 +47,13 @@ class BestHotelApi implements BestHotelApiInterface
 
     }
 
-    //filter hotels by date
+    /**
+     * private function to filter hotels by date
+     * @param array $hotel
+     * @param string $from
+     * @param string $to
+     * @return bool true or false
+     */
     private function dateFilter(array $hotel, string $fromDate, string $toDate): bool
     {
         $hotelFromDate = $this->isoLocalDate($hotel['fromDate']);
@@ -60,25 +73,47 @@ class BestHotelApi implements BestHotelApiInterface
         ) ? true : false;
     }
 
-    //filter hotels by city
+    /**
+     * private function to filter hotels by city
+     * @param array $hotel
+     * @param string $city
+     * @return bool true or false
+     */
     private function cityFilter(array $hotel, string $city): bool
     {
         return $hotel['city'] == $city;
     }
 
-    //filter hotels by number of adults
+    /**
+     * private function to filter hotels by adults count
+     * @param array $hotel
+     * @param int $numberOfAdults
+     * @return bool true or false
+     */
     private function numberOfAdultsFilter(array $hotel, int $numberOfAdults): bool
     {
         return $hotel['numberOfAdults'] == $numberOfAdults;
     }
 
-    // convert string date to ISO_LOCAL_DATE
+    /**
+     * private function to convert make sure its a valid iso local date
+     * @param string $date
+     * @return string iso local date
+     */
     private function isoLocalDate(string $date): string
     {
         return date('Y-m-d', strtotime($date));
     }
 
-    // calculate total cost
+    /**
+     * private function to calculate reservation price
+     * @param float $total
+     * @param string $inputFromDate
+     * @param string $inputToDate
+     * @param string $fromDate
+     * @param string $toDate
+     * @return float price
+     */
     private function calulateTotalCost(float $total, string $inputFromDate, string $inputToDate, string $fromDate, string $toDate): float
     {
         $availableDaysCount = $this->culculateDaysCount($fromDate, $toDate);
@@ -89,7 +124,11 @@ class BestHotelApi implements BestHotelApiInterface
 
     }
 
-    // calculate days diff count
+    /** private function to calculate days count
+     * @param string $from
+     * @param string $to
+     * @return int reservation days count
+     */
     private function culculateDaysCount(string $from, string $to): int
     {
         $fromDate = Carbon::createFromDate($from);
@@ -97,7 +136,10 @@ class BestHotelApi implements BestHotelApiInterface
         return $fromDate->diffInDays($toDate);
     }
 
-    // mimicing best hotel data
+    /**
+     * private function to mimic top hotels data source
+     * @return array of hotels
+     */
     private function bestHotelsData(): array
     {
 

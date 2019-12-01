@@ -1,25 +1,32 @@
-<?php 
+<?php
 
 namespace App\MimicProvidersApis;
 
+use App\MimicProvidersApis\Abstracts\TopHotelApiInterface;
 use Illuminate\Support\Carbon;
 
-use App\MimicProvidersApis\Abstracts\TopHotelApiInterface;
+class TopHotelApi implements TopHotelApiInterface
+{
 
-class TopHotelApi implements TopHotelApiInterface {
-    
-    // exposed best Hotels api
-    public function topHotelApi(string $from,string $to, string $city ,int $adultsCount):array
-    {   
-        
+    /**
+     * public function search exposed to search top hotels api
+     * @param string $from
+     * @param string $to
+     * @param string $city
+     * @param int $adultsCount
+     * @return array $hotels
+     */
+    public function topHotelApi(string $from, string $to, string $city, int $adultsCount): array
+    {
+
         $filteredHotels = [];
 
         $hotelsData = $this->topHotelsData();
 
         foreach ($hotelsData as $hotel) {
 
-            if($this->dateFilter($hotel,$from,$to)&&$this->cityFilter($hotel,$city)&&
-            $this->adultsCountFilter($hotel,$adultsCount)) {
+            if ($this->dateFilter($hotel, $from, $to) && $this->cityFilter($hotel, $city) &&
+                $this->adultsCountFilter($hotel, $adultsCount)) {
 
                 unset($hotel['from']);
 
@@ -34,48 +41,71 @@ class TopHotelApi implements TopHotelApiInterface {
 
     }
 
-    //filter hotels by date
-    private function dateFilter(array $hotel, string $from,string $to):bool
-    {   
-       $hotelFrom = $this->isoInstant($hotel['from']);
-       
-       $hotelTo = $this->isoInstant($hotel['to']);
+    /**
+     * private function to filter hotels by date
+     * @param array $hotel
+     * @param string $from
+     * @param string $to
+     * @return bool true or false
+     */
+    private function dateFilter(array $hotel, string $from, string $to): bool
+    {
+        $hotelFrom = $this->isoInstant($hotel['from']);
 
-       $inputFrom = $this->isoInstant($from);
-       
-       $inputTo = $this->isoInstant($to);
+        $hotelTo = $this->isoInstant($hotel['to']);
 
-       return (
-            
-            ($inputFrom>=$hotelFrom&&$inputFrom<=$inputTo) &&
+        $inputFrom = $this->isoInstant($from);
 
-            ($inputTo>=$inputFrom&&$inputTo<=$hotelTo) 
+        $inputTo = $this->isoInstant($to);
 
-            )?true:false;
+        return (
+
+            ($inputFrom >= $hotelFrom && $inputFrom <= $inputTo) &&
+
+            ($inputTo >= $inputFrom && $inputTo <= $hotelTo)
+
+        ) ? true : false;
     }
 
-    //filter hotels by city
-    private function cityFilter(array $hotel, string $city):bool
+    /**
+     * private function to filter hotels by city
+     * @param array $hotel
+     * @param string $city
+     * @return bool true or false
+     */
+    private function cityFilter(array $hotel, string $city): bool
     {
         return $hotel['city'] == $city;
     }
 
-    //filter hotels by number of adults
-    private function adultsCountFilter(array $hotel,int $adultsCount):bool
+    /**
+     * private function to filter hotels by adults count
+     * @param array $hotel
+     * @param int $adultsCount
+     * @return bool true or false
+     */
+    private function adultsCountFilter(array $hotel, int $adultsCount): bool
     {
         return $hotel['adultsCount'] == $adultsCount;
     }
-    
-    // convert string date to ISO_INSTANT
-    private function isoInstant(string $date):string
+
+    /**
+     * private function to convert date to iso instant formats
+     * @param string $date
+     * @return string iso instant format
+     */
+    private function isoInstant(string $date): string
     {
         $parsedDate = Carbon::parse($date);
-         
+
         return $parsedDate->toIso8601ZuluString();
     }
 
-    // mimicing top hotel api
-    private function topHotelsData():array
+    /**
+     * private function to mimic top hotels data source
+     * @return array of hotels
+     */
+    private function topHotelsData(): array
     {
 
         return [
@@ -87,8 +117,8 @@ class TopHotelApi implements TopHotelApiInterface {
                 "city" => "BJS",
                 "from" => '2019-11-03T10:15:30Z',
                 "to" => '2019-12-05T10:15:30Z',
- 	            "adultsCount" => 3,
-                "amenities" => ["Television","Computer and Internet access","Personal items","Hair dryer","Towels"]
+                "adultsCount" => 3,
+                "amenities" => ["Television", "Computer and Internet access", "Personal items", "Hair dryer", "Towels"],
             ],
             [
                 "hotelName" => "happy hotel",
@@ -98,8 +128,8 @@ class TopHotelApi implements TopHotelApiInterface {
                 "city" => "BJS",
                 "from" => '2019-11-01T10:15:30Z',
                 "to" => '2019-12-10T10:15:30Z',
- 	            "adultsCount" => 2,
-                "amenities" => ["Television","Computer and Internet access","Hair dryer","Towels"]
+                "adultsCount" => 2,
+                "amenities" => ["Television", "Computer and Internet access", "Hair dryer", "Towels"],
             ],
             [
                 "hotelName" => "new hotel",
@@ -109,8 +139,8 @@ class TopHotelApi implements TopHotelApiInterface {
                 "city" => "AUX",
                 "from" => '2019-11-01T10:15:30Z',
                 "to" => '2019-11-10T10:15:30Z',
- 	            "adultsCount" => 3,
-                "amenities" => ["Television","Computer and Internet access","Personal items","Hair dryer"]
+                "adultsCount" => 3,
+                "amenities" => ["Television", "Computer and Internet access", "Personal items", "Hair dryer"],
             ],
             [
                 "hotelName" => "old hotel",
@@ -120,8 +150,8 @@ class TopHotelApi implements TopHotelApiInterface {
                 "city" => "OTP",
                 "from" => '2019-11-02T10:15:30Z',
                 "to" => '2019-12-15T10:15:30Z',
- 	            "adultsCount" => 2,
-                "amenities" => ["Television","Computer and Internet access","Hair dryer","Towels"]
+                "adultsCount" => 2,
+                "amenities" => ["Television", "Computer and Internet access", "Hair dryer", "Towels"],
             ],
             [
                 "hotelName" => "happy hotel 2",
@@ -131,8 +161,8 @@ class TopHotelApi implements TopHotelApiInterface {
                 "city" => "NYC",
                 "from" => '2019-10-01T10:15:30Z',
                 "to" => '2019-12-25T10:15:30Z',
- 	            "adultsCount" => 3,
-                "amenities" => ["Television","Computer and Internet access","Personal items","Hair dryer","Towels"]
+                "adultsCount" => 3,
+                "amenities" => ["Television", "Computer and Internet access", "Personal items", "Hair dryer", "Towels"],
             ],
             [
                 "hotelName" => "old hotel 2",
@@ -142,8 +172,8 @@ class TopHotelApi implements TopHotelApiInterface {
                 "city" => "NYC",
                 "from" => '2019-09-01T10:15:30Z',
                 "to" => '2019-12-30T10:15:30Z',
- 	            "adultsCount" => 2,
-                "amenities" => ["Television","Personal items","Hair dryer","Towels"]
+                "adultsCount" => 2,
+                "amenities" => ["Television", "Personal items", "Hair dryer", "Towels"],
             ],
             [
                 "hotelName" => "new hotel 3",
@@ -152,10 +182,10 @@ class TopHotelApi implements TopHotelApiInterface {
                 "city" => "NYC",
                 "from" => '2019-11-01T10:15:30Z',
                 "to" => '2019-11-30T10:15:30Z',
- 	            "adultsCount" => 3,
+                "adultsCount" => 3,
                 "discount" => 10,
-                "amenities" => ["Television","Computer and Internet access","Personal items","Hair dryer","Towels"]
-            ]
+                "amenities" => ["Television", "Computer and Internet access", "Personal items", "Hair dryer", "Towels"],
+            ],
 
         ];
 
