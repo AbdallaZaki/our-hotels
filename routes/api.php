@@ -13,5 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/api/v1/search', 'OurHotelsController@searchHotels');
+Route::group(['prefix' => '/v1'], function(){
+    Route::get('/search', 'OurHotelsController@searchHotels');
+});
+
+
 

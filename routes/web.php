@@ -11,7 +11,6 @@
 |
 */
 
-Route::group(['prefix' => 'api/v1'], function(){
-    Route::get('/search', 'OurHotelsController@searchHotels');
+Route::get('/', function(){
+    return view('welcome');
 });
-

@@ -36,7 +36,7 @@ class SearchRequest extends FormRequest
     /**
      * Used For return json errors response
      *
-     * @return JsonResponse
+     * @return HttpResponseException
      */
 
     protected function failedValidation(Validator $validator)
